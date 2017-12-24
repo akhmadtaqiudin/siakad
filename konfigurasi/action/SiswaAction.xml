@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true"/>
+    <package name="Siswa" extends="struts-default" namespace="/siswa">
+    
+    	<!--mendeklarasikan dan memanggil class interceptor -->
+    	<interceptors>
+    		<interceptor name="authinterceptorLogin" class="com.modul.login.controller.CoreAuthentication" />
+    		<interceptor-stack name="authStack">
+				<interceptor-ref name="authinterceptorLogin"/>
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="basicStack"/>
+			</interceptor-stack>
+    	</interceptors>
+    	
+    	<global-results>
+			<result name="login">/pages/template/login.jsp</result>
+		</global-results>
+        
+    	<action name="SearchSiswa" class="com.modul.siswa.controller.SiswaController" method="searchAllSiswa">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/siswa/siswaMain.jsp</result>
+    		<result name="error">/pages/modul/siswa/siswaMain.jsp</result>
+    	</action>
+    	<action name="Search" class="com.modul.siswa.controller.SiswaController" method="searchAll">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/siswa/siswaMain.jsp</result>
+    		<result name="error">/pages/modul/siswa/siswaMain.jsp</result>
+    	</action>
+    	<action name="AddSiswa" >
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/siswa/siswaAdd.jsp</result>
+    		<result name="success">/pages/modul/siswa/siswaAdd.jsp</result>
+    		<result name="error">/pages/modul/siswa/siswaMain.jsp</result>
+    	</action>
+    	<action name="SaveSiswa" class="com.modul.siswa.controller.SiswaController" method="addSiswa">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/siswa/siswaAdd.jsp</result>
+    		<result name="success">/pages/modul/siswa/siswaMain.jsp</result>
+    		<result name="error">/pages/modul/siswa/siswaAdd.jsp</result>
+    	</action>
+    	<action name="EditSiswa" class="com.modul.siswa.controller.SiswaController" method="searchWhereSiswa">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/siswa/siswaEdit.jsp</result>
+    		<result name="success">/pages/modul/siswa/siswaEdit.jsp</result>
+    		<result name="error">/pages/modul/siswa/siswaMain.jsp</result>
+    	</action>
+    	<action name="SaveEditSiswa" class="com.modul.siswa.controller.SiswaController" method="editSiswa">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/siswa/siswaEdit.jsp</result>
+    		<result name="success">/pages/modul/siswa/siswaMain.jsp</result>
+    		<result name="error">/pages/modul/siswa/siswaEdit.jsp</result>
+    	</action>
+    	<action name="DeletSiswa" class="com.modul.siswa.controller.SiswaController" method="deletSiswa">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/siswa/siswaMain.jsp</result>
+    		<result name="error">/pages/modul/siswa/siswaMain.jsp</result>
+    	</action>
+    </package>
+</struts>

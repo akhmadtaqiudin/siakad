@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.modul.guru.services.guruService">
+	<resultMap id="BaseResultMap" type="com.modul.guru.model.Guru" >
+	    <result column="nip_guru" property="nip"/>
+	    <result column="nama_guru" property="namaGuru" />
+	    <result column="jk_guru" property="jenisKelamin" />
+	    <result column="pendidikan_terakhir" property="pendidikanTerakhir"/>
+	    <result column="tempat_lahir_guru" property="tempatLahir"/>
+	    <result column="tanggal_lahir_guru" property="tanggalLahir" />
+	    <result column="notlp_guru" property="noTlp"/>
+	    <result column="alamat" property="alamat"/>
+	</resultMap>
+	<select id="selectWhere" parameterType="com.modul.guru.model.Guru" resultMap="BaseResultMap">
+		select * from t_guru
+		WHERE nip_guru=#{nip}
+	</select>
+	<select id="selectAllGuru" parameterType="com.modul.guru.model.Guru" resultMap="BaseResultMap">
+		select * from t_guru	
+		where lower(nama_guru) like '%' || lower(#{namaGuru}) || '%' 
+	</select>
+  	<select id="countGuru" parameterType="com.modul.guru.model.Guru" resultType="java.lang.String">
+  		SELECT MAX(nip_guru) FROM t_guru
+  	</select>
+	<insert id="insertGuru" parameterType="com.modul.guru.model.Guru">
+		INSERT INTO t_guru(nip_guru,nama_guru,jk_guru,pendidikan_terakhir,tempat_lahir_guru,tanggal_lahir_guru,notlp_guru,alamat)
+    	VALUES (#{nip},#{namaGuru},#{jenisKelamin},#{pendidikanTerakhir},#{tempatLahir},#{tanggalLahir},#{noTlp},#{alamat})
+	</insert>
+	<update id="updateGuru" parameterType="com.modul.guru.model.Guru">
+		UPDATE t_guru SET
+		nama_guru=#{namaGuru},jk_guru=#{jenisKelamin},pendidikan_terakhir=#{pendidikanTerakhir},tempat_lahir_guru=#{tempatLahir},
+		tanggal_lahir_guru=#{tanggalLahir},notlp_guru=#{noTlp},alamat=#{alamat}
+		WHERE nip_guru=#{nip}
+	</update>
+	<delete id="deletGuru" parameterType="com.modul.guru.model.Guru">
+		DELETE FROM t_guru
+		WHERE nip_guru=#{nip}
+	</delete>
+</mapper>

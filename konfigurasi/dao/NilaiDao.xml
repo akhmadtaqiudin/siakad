@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.modul.nilai.services.NilaiService">
+	<resultMap id="BaseResultMap" type="com.modul.nilai.model.Nilai" >
+	    <result column="kode_nilai" property="kodeNilai"/>
+	    <result column="nama_siswa" property="namaSiswa" />
+	    <result column="nama_mapel" property="namaMapel" />
+	    <result column="nilai" property="nilaiSiswa" />
+	    <result column="predikat" property="predikat" />
+	    <result column="tahun_ajaran" property="tahunAjaran"/>
+	</resultMap>
+	<select id="selectWhere" parameterType="com.modul.nilai.model.Nilai" resultMap="BaseResultMap">
+		select * FROM t_nilai
+		WHERE kode_nilai=#{kodeNilai}
+	</select>
+	<select id="selectAllNilai" parameterType="com.modul.nilai.model.Nilai" resultMap="BaseResultMap">
+		select * FROM t_nilai
+		where lower(nama_siswa) like '%' || lower(#{namaSiswa}) || '%' 
+	</select>
+  	<select id="countNilai" parameterType="com.modul.nilai.model.Nilai" resultType="java.lang.Integer">
+  		SELECT COUNT(*) FROM t_nilai WHERE 
+  		lower(nama_siswa)=lower(#{namaSiswa})
+  		and lower(nama_mapel)=lower(#{namaMapel})
+  	</select>
+  	<select id="selectRaport" parameterType="com.modul.nilai.model.Nilai" resultMap="BaseResultMap">
+		select kode_nilai,nama_siswa,n.nama_mapel,tahun_ajaran,nilai,predikat from t_nilai n
+		left join t_mapel m on m.nama_mapel=n.nama_mapel
+		where lower(nama_siswa) like '%' || lower(#{namaSiswa}) || '%'
+		and lower(n.nama_mapel) like '%' || lower(#{namaMapel}) || '%'
+	</select>
+	<insert id="insertNilai" parameterType="com.modul.nilai.model.Nilai">
+		INSERT INTO t_nilai(kode_nilai,nama_siswa,nama_mapel,nilai,predikat)
+    	VALUES ((select case when max(kode_nilai) is null then 1 else max(kode_nilai)+1 end from t_nilai),
+    	#{namaSiswa},#{namaMapel},#{nilaiSiswa},#{predikat})
+	</insert>
+	<update id="updateNilai" parameterType="com.modul.nilai.model.Nilai">
+		UPDATE t_nilai SET nama_siswa=#{namaSiswa},nama_mapel=#{namaMapel},nilai=#{nilaiSiswa},predikat=#{predikat}
+		WHERE kode_nilai=#{kodeNilai}
+	</update>
+	<delete id="deletNilai" parameterType="com.modul.nilai.model.Nilai">
+		DELETE FROM t_nilai
+		WHERE kode_nilai = #{kodeNilai}
+	</delete>
+</mapper>
+   

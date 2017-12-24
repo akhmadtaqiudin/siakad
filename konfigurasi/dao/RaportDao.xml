@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.modul.raport.services.RaportService">
+	<resultMap id="BaseResultMap" type="com.modul.raport.model.Raport" >
+	    <result column="kode_raport" property="kodeRaport"/>
+	    <result column="nip" property="nip" />
+	    <result column="nis" property="nis"/>
+	    <result column="nama_siswa" property="namaSiswa" />
+	    <result column="nama_guru" property="namaGuru" />
+	    <result column="kode_mapel" property="kodeMapel"/>
+	    <result column="kode_nilai" property="kodeNilai" />
+	    <result column="nama_mapel" property="namaMapel" />
+	    <result column="tahun_ajaran" property="tahunAjaran"/>
+	</resultMap>
+	<select id="selectWhere" parameterType="com.modul.raport.model.Raport" resultMap="BaseResultMap">
+		select * FROM t_raport
+		WHERE kode_raport=#{kodeRaport}
+	</select>
+	<select id="selectAllRaport" parameterType="com.modul.raport.model.Raport" resultMap="BaseResultMap">
+		select * FROM t_raport r
+		left join t_siswa on t_siswa.nis=r.nis
+		left join t_guru on t_guru.nip_guru=r.nip
+		left join t_mapel on t_mapel.kode_mapel=r.kode_mapel
+		where lower(r.nis) like '%' || lower(#{nis}) || '%' 
+	</select>
+  	<select id="countRaport" parameterType="com.modul.raport.model.Raport" resultType="java.lang.Integer">
+  		SELECT COUNT(*) FROM t_raport WHERE lower(nama_siswa)=lower(#{namaSiswa})
+  	</select>
+	<insert id="insertRaport" parameterType="com.modul.raport.model.Raport">
+		INSERT INTO t_raport(kode_raport,nip,nis,nama_siswa,kode_mapel,kode_nilai,tahun_ajaran)
+    	VALUES ((select case when max(kode_raport) is null then 1 else max(kode_raport)+1 end from t_raport),
+    	#{nip},#{nis},#{namaSiswa},#{kodeMapel},#{kodeNilai},#{tahunAjaran})
+	</insert>
+	<update id="updateRaport" parameterType="com.modul.raport.model.Raport">
+		UPDATE t_raport SET nip=#{nip}
+		WHERE kode_raport=#{kodeRaport}
+	</update>
+	<delete id="deletRaport" parameterType="com.modul.raport.model.Raport">
+		DELETE FROM t_raport
+		WHERE kode_raport = #{kodeRaport}
+	</delete>
+</mapper>
+   

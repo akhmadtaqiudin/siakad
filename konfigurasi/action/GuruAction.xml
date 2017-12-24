@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true"/>
+    <package name="Guru" extends="struts-default" namespace="/guru">
+    
+    	<!--mendeklarasikan dan memanggil class interceptor -->
+    	<interceptors>
+    		<interceptor name="authinterceptorLogin" class="com.modul.login.controller.CoreAuthentication" />
+    		<interceptor-stack name="authStack">
+				<interceptor-ref name="authinterceptorLogin"/>
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="basicStack"/>
+			</interceptor-stack>
+    	</interceptors>
+    	
+    	<global-results>
+			<result name="login">/pages/template/login.jsp</result>
+		</global-results>
+        
+    	<action name="SearchGuru" class="com.modul.guru.controller.GuruController" method="searchAllGuru">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/guru/guruMain.jsp</result>
+    		<result name="error">/pages/modul/guru/guruMain.jsp</result>
+    	</action>
+    	<action name="AddGuru" >
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/guru/guruAdd.jsp</result>
+    		<result name="success">/pages/modul/guru/guruAdd.jsp</result>
+    		<result name="error">/pages/modul/guru/guruAdd.jsp</result>
+    	</action>
+    	<action name="SaveGuru" class="com.modul.guru.controller.GuruController" method="addGuru">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/guru/guruAdd.jsp</result>
+    		<result name="success">/pages/modul/guru/guruMain.jsp</result>
+    		<result name="error">/pages/modul/guru/guruAdd.jsp</result>
+    	</action>
+    	<action name="EditGuru" class="com.modul.guru.controller.GuruController" method="searchWhereGuru">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/guru/guruEdit.jsp</result>
+    		<result name="success">/pages/modul/guru/guruEdit.jsp</result>
+    		<result name="error">/pages/modul/guru/guruEdit.jsp</result>
+    	</action>
+    	<action name="SaveEditGuru" class="com.modul.guru.controller.GuruController" method="editGuru">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/guru/guruEdit.jsp</result>
+    		<result name="success">/pages/modul/guru/guruMain.jsp</result>
+    		<result name="error">/pages/modul/guru/guruEdit.jsp</result>
+    	</action>
+    	<action name="DeletGuru" class="com.modul.guru.controller.GuruController" method="deletGuru">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/guru/guruMain.jsp</result>
+    		<result name="error">/pages/modul/guru/guruMain.jsp</result>
+    	</action>
+    </package>
+</struts>

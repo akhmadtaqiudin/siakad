@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true"/>
+    <package name="Nilai" extends="struts-default" namespace="/nilai">
+    
+    	<!--mendeklarasikan dan memanggil class interceptor -->
+    	<interceptors>
+    		<interceptor name="authinterceptorLogin" class="com.modul.login.controller.CoreAuthentication" />
+    		<interceptor-stack name="authStack">
+				<interceptor-ref name="authinterceptorLogin"/>
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="basicStack"/>
+			</interceptor-stack>
+    	</interceptors>
+    	
+    	<global-results>
+			<result name="login">/pages/template/login.jsp</result>
+		</global-results>
+        
+    	<action name="SearchNilai" class="com.modul.nilai.controller.NilaiController" method="searchAllNilai">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/nilai/nilaiMain.jsp</result>
+    		<result name="error">/pages/modul/nilai/nilaiMain.jsp</result>
+    	</action>
+    	<action name="AddNilai" >
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/nilai/nilaiAdd.jsp</result>
+    		<result name="success">/pages/modul/nilai/nilaiAdd.jsp</result>
+    		<result name="error">/pages/modul/nilai/nilaiMain.jsp</result>
+    	</action>
+    	<action name="SaveNilai" class="com.modul.nilai.controller.NilaiController" method="addNilai">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/nilai/nilaiMain.jsp</result>
+    		<result name="error">/pages/modul/nilai/nilaiAdd.jsp</result>
+    	</action>
+    	<action name="EditNilai" class="com.modul.nilai.controller.NilaiController" method="searchWherenilai">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/nilai/nilaiEdit.jsp</result>
+    		<result name="success">/pages/modul/nilai/nilaiEdit.jsp</result>
+    		<result name="error">/pages/modul/nilai/nilaiMain.jsp</result>
+    	</action>
+    	<action name="SaveEditNilai" class="com.modul.nilai.controller.NilaiController" method="editNilai">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/nilai/nilaiMain.jsp</result>
+    		<result name="error">/pages/modul/nilai/nilaiEdit.jsp</result>
+    	</action>
+    	<action name="DeletNilai" class="com.modul.nilai.controller.NilaiController" method="deletNilai">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/nilai/nilaiMain.jsp</result>
+    		<result name="error">/pages/modul/nilai/nilaiMain.jsp</result>
+    	</action>
+    	<action name="SearchRaport" class="com.modul.nilai.controller.NilaiController" method="searchRaport">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/raport/raportMain.jsp</result>
+    		<result name="error">/pages/modul/raport/raportMain.jsp</result>
+    	</action>
+    	<action name="ExportExcel" class="com.modul.nilai.controller.NilaiController"  method="exportReport">
+	       	<interceptor-ref name="authStack" />
+	        <result name="input">/pages/modul/raport/raportMain.jsp</result>
+			<result name="success" type="stream">
+				<param name="contentType">application/vnd.ms-excel</param>
+		        <param name="inputName">inputStreamFile</param>
+		        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+		        <param name="bufferSize">4096</param>
+			</result>
+			<result name="error">/pages/modul/raport/raportMain.jsp</result>
+		</action>
+    </package>
+</struts>

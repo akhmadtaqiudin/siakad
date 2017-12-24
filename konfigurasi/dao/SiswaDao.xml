@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.modul.siswa.services.SiswaService">
+	<resultMap id="BaseResultMap" type="com.modul.siswa.model.Siswa" >
+	    <result column="nis" property="nis"/>
+	    <result column="nama_siswa" property="namaSiswa" />
+	    <result column="jk_siswa" property="jenisKelamin" />
+	    <result column="kls_siswa" property="kelas"/>
+	    <result column="jurusan" property="jurusan"/>
+	    <result column="tempat_lahir_siswa" property="tempatLahirSiswa"/>
+	    <result column="tanggal_lahir_siswa" property="tanggalLahirSiswa" />
+	    <result column="notlp_siswa" property="noTlpSiswa"/>
+	    <result column="alamat_siswa" property="alamatSiswa"/>
+	</resultMap>
+	<select id="selectWhere" parameterType="com.modul.siswa.model.Siswa" resultMap="BaseResultMap">
+		select * from t_siswa
+		WHERE nis=#{nis}
+	</select>
+	<select id="selectAllSiswa" parameterType="com.modul.siswa.model.Siswa" resultMap="BaseResultMap">
+		select * from t_siswa		
+		where lower(nama_siswa) like '%' || lower(#{namaSiswa}) || '%' 
+	</select>
+	<select id="selectAll" parameterType="com.modul.siswa.model.Siswa" resultMap="BaseResultMap">
+		select * from t_siswa
+	</select>
+  	<select id="countSiswa" parameterType="com.modul.siswa.model.Siswa" resultType="java.lang.String">
+  		SELECT MAX(nis) FROM t_siswa
+  	</select>
+	<insert id="insertSiswa" parameterType="com.modul.siswa.model.Siswa">
+		INSERT INTO t_siswa(nis,nama_siswa,jk_siswa,kls_siswa,jurusan,tempat_lahir_siswa,tanggal_lahir_siswa,notlp_siswa,alamat_siswa)
+    	VALUES (#{nis},#{namaSiswa},#{jenisKelamin},#{kelas},#{jurusan},#{tempatLahirSiswa},#{tanggalLahirSiswa},#{noTlpSiswa},#{alamatSiswa})
+	</insert>
+	<update id="updateSiswa" parameterType="com.modul.siswa.model.Siswa">
+		UPDATE t_siswa SET
+		nama_siswa=#{namaSiswa},jk_siswa=#{jenisKelamin},kls_siswa=#{kelas},jurusan=#{jurusan},tempat_lahir_siswa=#{tempatLahirSiswa},
+		tanggal_lahir_siswa=#{tanggalLahirSiswa},notlp_siswa=#{noTlpSiswa},alamat_siswa=#{alamatSiswa}
+		WHERE nis=#{nis}
+	</update>
+	<delete id="deletSiswa" parameterType="com.modul.siswa.model.Siswa">
+		DELETE FROM t_siswa
+		WHERE nis=#{nis}
+	</delete>
+</mapper>

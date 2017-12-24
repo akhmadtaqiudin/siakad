@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.modul.mapel.services.MapelService">
+	<resultMap id="BaseResultMap" type="com.modul.mapel.model.Mapel" >
+	    <result column="kode_mapel" property="kodeMapel"/>
+	    <result column="nama_mapel" property="namaMapel" />
+	    <result column="tahun_ajaran" property="tahunAjaran"/>
+	</resultMap>
+	<select id="selectWhere" parameterType="com.modul.mapel.model.Mapel" resultMap="BaseResultMap">
+		select * FROM t_mapel
+		WHERE kode_mapel=#{kodeMapel}
+	</select>
+	<select id="selectAllMapel" parameterType="com.modul.mapel.model.Mapel" resultMap="BaseResultMap">
+		select * FROM t_mapel
+		where lower(nama_mapel) like '%' || lower(#{namaMapel}) || '%' 
+	</select>
+	<select id="selectAll" parameterType="com.modul.mapel.model.Mapel" resultMap="BaseResultMap">
+		select * FROM t_mapel
+	</select>
+	<insert id="insertMapel" parameterType="com.modul.mapel.model.Mapel">
+		INSERT INTO t_mapel(kode_mapel,nama_mapel,tahun_ajaran)
+    	VALUES ((select case when max(kode_mapel) is null then 1 else max(kode_mapel)+1 end from t_mapel),
+    	#{namaMapel},#{tahunAjaran})
+	</insert>
+	<update id="updateMapel" parameterType="com.modul.mapel.model.Mapel">
+		UPDATE t_mapel SET nama_mapel=#{namaMapel},tahun_ajaran=#{tahunAjaran}
+		WHERE kode_mapel=#{kodeMapel}
+	</update>
+	<delete id="deletMapel" parameterType="com.modul.mapel.model.Mapel">
+		DELETE FROM t_mapel
+		WHERE kode_mapel = #{kodeMapel}
+	</delete>
+</mapper>
+   

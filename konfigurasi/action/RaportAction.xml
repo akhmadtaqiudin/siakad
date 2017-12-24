@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true"/>
+    <package name="Raport" extends="struts-default" namespace="/raport">
+    
+    	<!--mendeklarasikan dan memanggil class interceptor -->
+    	<interceptors>
+    		<interceptor name="authinterceptorLogin" class="com.modul.login.controller.CoreAuthentication" />
+    		<interceptor-stack name="authStack">
+				<interceptor-ref name="authinterceptorLogin"/>
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="basicStack"/>
+			</interceptor-stack>
+    	</interceptors>
+    	
+    	<global-results>
+			<result name="login">/pages/template/login.jsp</result>
+		</global-results>
+        
+    	<action name="SearchRaport" class="com.modul.raport.controller.RaportController" method="searchAllRaport">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/raport/raportMain.jsp</result>
+    		<result name="error">/pages/modul/raport/raportMain.jsp</result>
+    	</action>
+    	<action name="AddRaport" >
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/raport/raportAdd.jsp</result>
+    		<result name="success">/pages/modul/raport/raportAdd.jsp</result>
+    		<result name="error">/pages/modul/raport/raportMain.jsp</result>
+    	</action>
+    	<action name="SaveRaport" class="com.modul.raport.controller.RaportController" method="addRaport">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/raport/raportMain.jsp</result>
+    		<result name="error">/pages/modul/raport/raportAdd.jsp</result>
+    	</action>
+    	<action name="EditRaport" class="com.modul.raport.controller.RaportController" method="searchWhereRaport">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/raport/raportEdit.jsp</result>
+    		<result name="success">/pages/modul/raport/raportEdit.jsp</result>
+    		<result name="error">/pages/modul/raport/raportMain.jsp</result>
+    	</action>
+    	<action name="SaveEditRaport" class="com.modul.raport.controller.RaportController" method="editRaport">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/raport/raportMain.jsp</result>
+    		<result name="error">/pages/modul/raport/raportEdit.jsp</result>
+    	</action>
+    	<action name="DeletRaport" class="com.modul.raport.controller.RaportController" method="deletRaport">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/raport/raportMain.jsp</result>
+    		<result name="error">/pages/modul/raport/raportMain.jsp</result>
+    	</action>
+    </package>
+</struts>

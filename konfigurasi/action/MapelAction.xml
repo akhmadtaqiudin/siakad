@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true"/>
+    <package name="Mapel" extends="struts-default" namespace="/mapel">
+    
+    	<!--mendeklarasikan dan memanggil class interceptor -->
+    	<interceptors>
+    		<interceptor name="authinterceptorLogin" class="com.modul.login.controller.CoreAuthentication" />
+    		<interceptor-stack name="authStack">
+				<interceptor-ref name="authinterceptorLogin"/>
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="basicStack"/>
+			</interceptor-stack>
+    	</interceptors>
+    	
+    	<global-results>
+			<result name="login">/pages/template/login.jsp</result>
+		</global-results>
+        
+    	<action name="SearchMapel" class="com.modul.mapel.controller.MapelController" method="searchAllMapel">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/mapel/mapelMain.jsp</result>
+    		<result name="error">/pages/modul/mapel/mapelMain.jsp</result>
+    	</action>
+    	<action name="Search" class="com.modul.mapel.controller.MapelController" method="searchAll">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/mapel/mapelMain.jsp</result>
+    		<result name="error">/pages/modul/mapel/mapelMain.jsp</result>
+    	</action>
+    	<action name="AddMapel" >
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/mapel/mapelAdd.jsp</result>
+    		<result name="success">/pages/modul/mapel/mapelAdd.jsp</result>
+    		<result name="error">/pages/modul/mapel/mapelMain.jsp</result>
+    	</action>
+    	<action name="SaveMapel" class="com.modul.mapel.controller.MapelController" method="addMapel">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/mapel/mapelAdd.jsp</result>
+    		<result name="success">/pages/modul/mapel/mapelMain.jsp</result>
+    		<result name="error">/pages/modul/mapel/mapelAdd.jsp</result>
+    	</action>
+    	<action name="EditMapel" class="com.modul.mapel.controller.MapelController" method="searchWhereMapel">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/mapel/mapelEdit.jsp</result>
+    		<result name="success">/pages/modul/mapel/mapelEdit.jsp</result>
+    		<result name="error">/pages/modul/mapel/mapelMain.jsp</result>
+    	</action>
+    	<action name="SaveEditMapel" class="com.modul.mapel.controller.MapelController" method="editMapel">
+    		<interceptor-ref name="authStack"/>
+    		<result name="input">/pages/modul/mapel/mapelEdit.jsp</result>
+    		<result name="success">/pages/modul/mapel/mapelMain.jsp</result>
+    		<result name="error">/pages/modul/mapel/mapelEdit.jsp</result>
+    	</action>
+    	<action name="DeletMapel" class="com.modul.mapel.controller.MapelController" method="deletMapel">
+    		<interceptor-ref name="authStack"/>
+    		<result name="success">/pages/modul/mapel/mapelMain.jsp</result>
+    		<result name="error">/pages/modul/mapel/mapelMain.jsp</result>
+    	</action>
+    </package>
+</struts>
